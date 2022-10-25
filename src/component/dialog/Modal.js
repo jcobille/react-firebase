@@ -1,22 +1,27 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import { BodyAddEdit, BodyDelete } from './Body';
 import { useDispatch, useSelector } from "react-redux";
 import { createUpdateUser, deleteUser } from "../../redux/usersAction";
-import { useState } from "react";
 
 Modal.setAppElement('#root');
 const App = (props) => {
     const users = useSelector(state => state.users);
     const type = props.modal.modalType;
-    const title = type === 'add' ? 'Add User' : type === 'edit' ? 'Edit User' : "Confirm User Delete";
+    let title = '';
     const data = props.modal.data;
     const dispatch = useDispatch();
     const [user, setUser] = useState({
         name: '',
         email: ''
     });
-
+    if (type === "add") {
+        title = 'Add User';
+    } else if (type === 'edit') {
+        title = 'Edit User';
+    } else {
+        title = 'Confirm User Delete';
+    }
     useEffect(() => {
         if (type === "add") {
             setUser({
@@ -25,6 +30,7 @@ const App = (props) => {
             })
         } else {
             setUser({ ...user, ...data });
+            title = 'Edit User';
         }
     }, [data]);
 
@@ -64,7 +70,7 @@ const App = (props) => {
     }
 
     const emailChecker = ({ email, id }) => {
-        const pattern1 = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        const pattern1 = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g
         if (!pattern1.test(email)) {
             alert("Invalid Email");
             return false;

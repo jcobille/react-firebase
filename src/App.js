@@ -1,6 +1,5 @@
 import React from "react";
-import { Routes, Route } from 'react-router-dom';
-import { BrowserRouter } from 'react-router-dom';
+import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import UsersList from "./component/UsersList";
 
 const App = () => {
